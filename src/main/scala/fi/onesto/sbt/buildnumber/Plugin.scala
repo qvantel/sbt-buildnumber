@@ -5,15 +5,11 @@ import sbt._
 
 
 object BuildNumber extends Plugin {
-  object Keys {
-    val unstagedChanges      = taskKey[Boolean]("true if the current repository has unstaged changes")
-    val uncommittedChanges   = taskKey[Boolean]("true if the current repository has uncommitted changes")
-    val untrackedFiles       = taskKey[Seq[File]]("list of files that are not in version control")
-    val buildNumber          = taskKey[Option[String]]("current revision of the repository")
-    val decoratedBuildNumber = taskKey[Option[String]]("current revision with decorations")
-  }
-
-  import Keys._
+  val unstagedChanges      = taskKey[Boolean]("true if the current repository has unstaged changes")
+  val uncommittedChanges   = taskKey[Boolean]("true if the current repository has uncommitted changes")
+  val untrackedFiles       = taskKey[Seq[File]]("list of files that are not in version control")
+  val buildNumber          = taskKey[Option[String]]("current revision of the repository")
+  val decoratedBuildNumber = taskKey[Option[String]]("current revision with decorations")
 
   val buildNumberSettings = Seq(
     unstagedChanges      := Try("git diff --no-ext-diff --quiet --exit-code".! != 0) getOrElse false,
