@@ -20,7 +20,7 @@ publishArtifact in Test := false
 
 scalaVersion := "2.10.2"
 
-sbtVersion := "0.13.0-RC5"
+sbtVersion := "0.13.0"
 
 
 net.virtualvoid.sbt.graph.Plugin.graphSettings
