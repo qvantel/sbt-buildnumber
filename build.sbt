@@ -20,7 +20,7 @@ publishArtifact in Test := false
 
 scalaVersion := "2.10.4"
 
-sbtVersion := "0.13.1"
+sbtVersion := "0.13.2"
 
 
 net.virtualvoid.sbt.graph.Plugin.graphSettings
@@ -53,3 +53,6 @@ scalacOptions in ThisBuild ++= Seq(
   "-Xmax-classfile-name", "130"  // avoid problems on eCryptFS
 )
 
+libraryDependencies ++= Seq(
+  "org.eclipse.jgit" % "org.eclipse.jgit" % "3.4.1.201406201815-r"
+)
