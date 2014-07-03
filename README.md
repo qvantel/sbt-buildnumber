@@ -37,6 +37,7 @@ Keys
 
 The available keys are:
 
+* `scmType: Scm` - detected version control system
 * `unstagedChanges: Boolean` – true if the current repository has unstaged changes
 * `uncommittedChanges: Boolean` – true if the current repository has uncommitted changes
 * `untrackedFiles: Seq[File]` – list of files that are not in version control

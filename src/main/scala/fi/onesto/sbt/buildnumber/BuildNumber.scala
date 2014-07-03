@@ -13,15 +13,7 @@ object BuildNumber extends Plugin {
     val Uncommitted = "+"
   }
 
-  private[this] object Git {
-    val GetUnstaged         = "git diff --no-ext-diff --quiet --exit-code"
-    val GetUncommitted      = "git diff-index --cached --quiet HEAD"
-    val GetUntracked        = "git ls-files --others --exclude-standard"
-    val GetBuildNumber      = "git rev-parse --quiet --verify HEAD"
-    val GetShortBuildNumber = "git rev-parse --quiet --verify --short HEAD"
-    val GetBranchName       = "git rev-parse --quiet --verify --abbrev-ref HEAD"
-  }
-
+  val scmType                   = taskKey[Scm]("detected type of version control")
   val unstagedChanges           = taskKey[Boolean]("true if the current repository has unstaged changes")
   val uncommittedChanges        = taskKey[Boolean]("true if the current repository has uncommitted changes")
   val untrackedFiles            = taskKey[Seq[File]]("list of files that are not in version control")
@@ -29,7 +21,7 @@ object BuildNumber extends Plugin {
   val shortBuildNumber          = taskKey[Option[String]]("short version of the current revision of the repository")
   val branchName                = taskKey[Option[String]]("the current branch name")
   val decoratedBuildNumber      = taskKey[Option[String]]("current revision with decorations")
-  val decoratedShortBuildNumber = taskKey[Option[String]]("current revision with decorations")
+  val decoratedShortBuildNumber = taskKey[Option[String]]("short version of the current revision with decorations")
 
   private[this] implicit class BooleanToMark(val underlying: Boolean) extends AnyVal {
     def toMark(mark: String): String = if (underlying) mark else ""
@@ -45,12 +37,18 @@ object BuildNumber extends Plugin {
     linesCommand(in, command).map(file)
 
   val buildNumberSettings = Seq(
-    unstagedChanges    := boolCommand(baseDirectory.value, Git.GetUnstaged),
-    uncommittedChanges := boolCommand(baseDirectory.value, Git.GetUncommitted),
-    untrackedFiles     := filesCommand(baseDirectory.value, Git.GetUntracked),
-    buildNumber        := firstLineCommand(baseDirectory.value, Git.GetBuildNumber),
-    shortBuildNumber   := firstLineCommand(baseDirectory.value, Git.GetShortBuildNumber),
-    branchName         := firstLineCommand(baseDirectory.value, Git.GetBranchName),
+    scmType            := {
+      if ((((baseDirectory in LocalRootProject).value) / ".git").exists())
+        Git
+      else
+        NoScm
+    },
+    unstagedChanges    := boolCommand(baseDirectory.value, scmType.value.getUnstaged),
+    uncommittedChanges := boolCommand(baseDirectory.value, scmType.value.getUncommitted),
+    untrackedFiles     := filesCommand(baseDirectory.value, scmType.value.getUntracked),
+    buildNumber        := firstLineCommand(baseDirectory.value, scmType.value.getBuildNumber),
+    shortBuildNumber   := firstLineCommand(baseDirectory.value, scmType.value.getShortBuildNumber),
+    branchName         := firstLineCommand(baseDirectory.value, scmType.value.getBranchName),
 
     decoratedBuildNumber := {
       buildNumber.value map { revision =>
