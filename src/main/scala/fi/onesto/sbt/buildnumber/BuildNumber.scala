@@ -40,6 +40,8 @@ object BuildNumber extends Plugin {
     scmType            := {
       if ((((baseDirectory in LocalRootProject).value) / ".git").exists())
         Git
+      else if ((((baseDirectory in LocalRootProject).value) / ".hg").exists())
+        Mercurial
       else
         NoScm
     },
