@@ -4,7 +4,7 @@ sbt-buildnumber
 This plugin adds some keys containing SCM information. It may be useful in
 conjuction with [sbt-buildinfo](https://github.com/sbt/sbt-buildinfo).
 
-Currently only Git (via command-line commands) is the only supported SCM.
+Currently only Git and Mercurial (via command-line commands) are supported
 
 Installation
 ------------
