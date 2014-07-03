@@ -52,7 +52,3 @@ scalacOptions in ThisBuild ++= Seq(
   "-Xlog-reflective-calls",
   "-Xmax-classfile-name", "130"  // avoid problems on eCryptFS
 )
-
-libraryDependencies ++= Seq(
-  "org.eclipse.jgit" % "org.eclipse.jgit" % "3.4.1.201406201815-r"
-)
