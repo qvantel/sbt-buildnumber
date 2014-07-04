@@ -2,6 +2,8 @@ sbtPlugin := true
 
 name := "buildnumber"
 
+version := "0.0.1"
+
 organization := "fi.onesto.sbt"
 
 description := "VCS build number plugin for SBT"
@@ -20,7 +22,7 @@ publishArtifact in Test := false
 
 scalaVersion := "2.10.4"
 
-sbtVersion := "0.13.1"
+sbtVersion := "0.13.2"
 
 
 net.virtualvoid.sbt.graph.Plugin.graphSettings
@@ -52,4 +54,3 @@ scalacOptions in ThisBuild ++= Seq(
   "-Xlog-reflective-calls",
   "-Xmax-classfile-name", "130"  // avoid problems on eCryptFS
 )
-
