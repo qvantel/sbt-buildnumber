@@ -1,38 +1,40 @@
 package fi.onesto.sbt.buildnumber
 
+import sbt._
+
 
 sealed trait Scm {
-  def getUnstaged: String
-  def getUncommitted: String
-  def getUntracked: String
-  def getBuildNumber: String
-  def getShortBuildNumber: String
-  def getBranchName: String
+  def getUnstaged(cwd: File):         ProcessBuilder
+  def getUncommitted(cwd: File):      ProcessBuilder
+  def getUntracked(cwd: File):        ProcessBuilder
+  def getBuildNumber(cwd: File):      ProcessBuilder
+  def getShortBuildNumber(cwd: File): ProcessBuilder
+  def getBranchName(cwd: File):       ProcessBuilder
 }
 
 case object Git extends Scm {
-  override val getUnstaged         = "git diff --no-ext-diff --quiet --exit-code"
-  override val getUncommitted      = "git diff-index --cached --quiet HEAD"
-  override val getUntracked        = "git ls-files --others --exclude-standard"
-  override val getBuildNumber      = "git rev-parse --quiet --verify HEAD"
-  override val getShortBuildNumber = "git rev-parse --quiet --verify --short HEAD"
-  override val getBranchName       = "git rev-parse --quiet --verify --abbrev-ref HEAD"
+  override def getUnstaged(cwd: File)         = Process("git diff --no-ext-diff --quiet --exit-code", cwd)
+  override def getUncommitted(cwd: File)      = Process("git diff-index --cached --quiet HEAD", cwd)
+  override def getUntracked(cwd: File)        = Process("git ls-files --others --exclude-standard", cwd)
+  override def getBuildNumber(cwd: File)      = Process("git rev-parse --quiet --verify HEAD", cwd)
+  override def getShortBuildNumber(cwd: File) = Process("git rev-parse --quiet --verify --short HEAD", cwd)
+  override def getBranchName(cwd: File)       = Process("git rev-parse --quiet --verify --abbrev-ref HEAD", cwd)
 }
 
 case object Mercurial extends Scm {
-  override val getUnstaged         = "false"
-  override val getUncommitted      = "hg id -i|grep \\+"
-  override val getUntracked        = "hg st -un"
-  override val getBuildNumber      = "hg id -i | sed 's/+//'"
-  override val getShortBuildNumber = "hg id -i | sed 's/+//'"
-  override val getBranchName       = "hg branch"
+  override def getUnstaged(cwd: File)         = Process("true")
+  override def getUncommitted(cwd: File)      = Process("hg id -i", cwd) #| Process(Seq("fgrep", "-v", "+"))
+  override def getUntracked(cwd: File)        = Process("hg st -un", cwd)
+  override def getBuildNumber(cwd: File)      = Process("hg id -i", cwd) #| Process(Seq("sed", "s/+//"))
+  override def getShortBuildNumber(cwd: File) = Process("hg id -i", cwd) #| Process(Seq("sed", "s/+//"))
+  override def getBranchName(cwd: File)       = Process("hg branch", cwd)
 }
 
 case object NoScm extends Scm {
-  override val getUnstaged         = "false"
-  override val getUncommitted      = "false"
-  override val getUntracked        = "false"
-  override val getBuildNumber      = "false"
-  override val getShortBuildNumber = "false"
-  override val getBranchName       = "false"
+  override def getUnstaged(cwd: File)         = Process("false")
+  override def getUncommitted(cwd: File)      = Process("false")
+  override def getUntracked(cwd: File)        = Process("false")
+  override def getBuildNumber(cwd: File)      = Process("false")
+  override def getShortBuildNumber(cwd: File) = Process("false")
+  override def getBranchName(cwd: File)       = Process("false")
 }
