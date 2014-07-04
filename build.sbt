@@ -2,6 +2,8 @@ sbtPlugin := true
 
 name := "buildnumber"
 
+version := "0.0.1"
+
 organization := "fi.onesto.sbt"
 
 description := "VCS build number plugin for SBT"
