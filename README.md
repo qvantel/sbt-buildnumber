@@ -26,7 +26,7 @@ Add this to your `build.sbt`:
 
     buildNumberSettings
 
-With [sbt-buildinfo](https://github.com/sbt/sbt-buildinfo) you can use the 
+With [sbt-buildinfo](https://github.com/sbt/sbt-buildinfo) you can use the
 provided keys in `buildInfoKeys`. For example:
 
     buildInfoKeys := Seq[BuildInfoKey](organization, name, version, shortBuildNumber)
