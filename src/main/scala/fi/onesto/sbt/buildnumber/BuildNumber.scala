@@ -27,14 +27,14 @@ object BuildNumber extends Plugin {
     def toMark(mark: String): String = if (underlying) mark else ""
   }
 
-  private[this] def boolCommand(in: File, command: String): Boolean =
-    Try(Process(command, in).! != 0) getOrElse false
-  private[this] def linesCommand(in: File, command: String): Seq[String] =
-    Try(Process(command, in).lines_!.toVector) getOrElse Vector.empty
-  private[this] def firstLineCommand(in: File, command: String): Option[String] =
-    linesCommand(in, command).headOption
-  private[this] def filesCommand(in: File, command: String): Seq[File] =
-    linesCommand(in, command).map(file)
+  private[this] def boolCommand(command: ProcessBuilder): Boolean =
+    Try(command.! != 0) getOrElse false
+  private[this] def linesCommand(command: ProcessBuilder): Seq[String] =
+    Try(command.lines_!.toVector) getOrElse Vector.empty
+  private[this] def firstLineCommand(command: ProcessBuilder): Option[String] =
+    linesCommand(command).headOption
+  private[this] def filesCommand(command: ProcessBuilder): Seq[File] =
+    linesCommand(command).map(file)
 
   val buildNumberSettings = Seq(
     scmType            := {
@@ -45,12 +45,12 @@ object BuildNumber extends Plugin {
       else
         NoScm
     },
-    unstagedChanges    := boolCommand(baseDirectory.value, scmType.value.getUnstaged),
-    uncommittedChanges := boolCommand(baseDirectory.value, scmType.value.getUncommitted),
-    untrackedFiles     := filesCommand(baseDirectory.value, scmType.value.getUntracked),
-    buildNumber        := firstLineCommand(baseDirectory.value, scmType.value.getBuildNumber),
-    shortBuildNumber   := firstLineCommand(baseDirectory.value, scmType.value.getShortBuildNumber),
-    branchName         := firstLineCommand(baseDirectory.value, scmType.value.getBranchName),
+    unstagedChanges    := boolCommand(scmType.value.getUnstaged(baseDirectory.value)),
+    uncommittedChanges := boolCommand(scmType.value.getUncommitted(baseDirectory.value)),
+    untrackedFiles     := filesCommand(scmType.value.getUntracked(baseDirectory.value)),
+    buildNumber        := firstLineCommand(scmType.value.getBuildNumber(baseDirectory.value)),
+    shortBuildNumber   := firstLineCommand(scmType.value.getShortBuildNumber(baseDirectory.value)),
+    branchName         := firstLineCommand(scmType.value.getBranchName(baseDirectory.value)),
 
     decoratedBuildNumber := {
       buildNumber.value map { revision =>
