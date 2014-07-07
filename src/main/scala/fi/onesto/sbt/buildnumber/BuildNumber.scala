@@ -1,17 +1,11 @@
 package fi.onesto.sbt.buildnumber
 
-import scala.util._
 import sbt._
 
 
-object BuildNumber extends Plugin {
+object BuildNumber extends AutoPlugin {
+  import Helpers._
   import sbt.Keys.baseDirectory
-
-  private[this] object C {
-    val Unstaged    = "*"
-    val Untracked   = "%"
-    val Uncommitted = "+"
-  }
 
   val scmType                   = taskKey[Scm]("detected type of version control")
   val unstagedChanges           = taskKey[Boolean]("true if the current repository has unstaged changes")
@@ -23,21 +17,10 @@ object BuildNumber extends Plugin {
   val decoratedBuildNumber      = taskKey[Option[String]]("current revision with decorations")
   val decoratedShortBuildNumber = taskKey[Option[String]]("short version of the current revision with decorations")
 
-  private[this] implicit class BooleanToMark(val underlying: Boolean) extends AnyVal {
-    def toMark(mark: String): String = if (underlying) mark else ""
-  }
+  override val trigger = allRequirements
 
-  private[this] def boolCommand(command: ProcessBuilder): Boolean =
-    Try(command.! != 0) getOrElse false
-  private[this] def linesCommand(command: ProcessBuilder): Seq[String] =
-    Try(command.lines_!.toVector) getOrElse Vector.empty
-  private[this] def firstLineCommand(command: ProcessBuilder): Option[String] =
-    linesCommand(command).headOption
-  private[this] def filesCommand(command: ProcessBuilder): Seq[File] =
-    linesCommand(command).map(file)
-
-  val buildNumberSettings = Seq(
-    scmType            := {
+  override val projectSettings = Seq(
+    scmType := {
       if ((((baseDirectory in LocalRootProject).value) / ".git").exists())
         Git
       else if ((((baseDirectory in LocalRootProject).value) / ".hg").exists())
@@ -45,6 +28,7 @@ object BuildNumber extends Plugin {
       else
         NoScm
     },
+
     unstagedChanges    := boolCommand(scmType.value.getUnstaged(baseDirectory.value)),
     uncommittedChanges := boolCommand(scmType.value.getUncommitted(baseDirectory.value)),
     untrackedFiles     := filesCommand(scmType.value.getUntracked(baseDirectory.value)),
