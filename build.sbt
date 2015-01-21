@@ -2,7 +2,7 @@ sbtPlugin := true
 
 name := "buildnumber"
 
-version := "0.0.2"
+version := "0.0.3"
 
 organization := "fi.onesto.sbt"
 
