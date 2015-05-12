@@ -38,3 +38,14 @@ case object NoScm extends Scm {
   override def getShortBuildNumber(cwd: File) = Process("false")
   override def getBranchName(cwd: File)       = Process("false")
 }
+
+object Scm {
+  def detect(rootDirectory: File): Scm = {
+    if ((rootDirectory / ".git").exists())
+      Git
+    else if ((rootDirectory / ".hg").exists())
+      Mercurial
+    else
+      NoScm
+  }
+}

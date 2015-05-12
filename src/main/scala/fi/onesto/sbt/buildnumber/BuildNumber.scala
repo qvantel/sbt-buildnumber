@@ -20,14 +20,7 @@ object BuildNumber extends AutoPlugin {
   override val trigger = allRequirements
 
   override val projectSettings = Seq(
-    scmType := {
-      if ((((baseDirectory in LocalRootProject).value) / ".git").exists())
-        Git
-      else if ((((baseDirectory in LocalRootProject).value) / ".hg").exists())
-        Mercurial
-      else
-        NoScm
-    },
+    scmType := Scm.detect((baseDirectory in LocalRootProject).value),
 
     unstagedChanges    := boolCommand(scmType.value.getUnstaged(baseDirectory.value)),
     uncommittedChanges := boolCommand(scmType.value.getUncommitted(baseDirectory.value)),
