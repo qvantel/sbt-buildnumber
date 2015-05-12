@@ -6,7 +6,7 @@ sbtVersion := "0.13.8"
 
 name := "sbt-buildnumber"
 
-version := "0.0.3"
+version := "0.1.0"
 
 organization := "fi.onesto.sbt"
 
