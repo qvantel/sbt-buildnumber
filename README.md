@@ -9,22 +9,13 @@ Currently only Git and Mercurial (via command-line commands) are supported
 Installation
 ------------
 
-If you do not have it already, create a `project/project/Plugins.scala` with content like:
+Add to your project/plugins.sbt:
 
-    import sbt._
-
-    object Plugins extends Build {
-      lazy val sbtBuildNumberPlugin = uri("git://github.com/onesto/sbt-buildnumber.git")
-      lazy val plugins = Project("plugins", file(".")).dependsOn(sbtBuildNumberPlugin)
-    }
+addSbtPlugin("fi.onesto.sbt" % "sbt-buildnumber" % "0.1.0")
 
 
 Usage
 -----
-
-Add this to your `build.sbt`:
-
-    buildNumberSettings
 
 With [sbt-buildinfo](https://github.com/sbt/sbt-buildinfo) you can use the
 provided keys in `buildInfoKeys`. For example:
