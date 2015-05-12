@@ -1,8 +1,8 @@
 sbtPlugin := true
 
-scalaVersion := "2.10.4"
+scalaVersion := "2.10.5"
 
-sbtVersion := "0.13.5"
+sbtVersion := "0.13.8"
 
 name := "sbt-buildnumber"
 
