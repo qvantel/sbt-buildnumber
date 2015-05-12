@@ -35,18 +35,18 @@ object BuildNumber extends AutoPlugin {
 
     decoratedBuildNumber := {
       buildNumber.value map { revision =>
-        val unstagedMark    = (unstagedChanges.value).toMark(C.Unstaged)
-        val untrackedMark   = (untrackedFiles.value.nonEmpty).toMark(C.Untracked)
-        val uncommittedMark = (uncommittedChanges.value).toMark(C.Uncommitted)
+        val unstagedMark    = unstagedChanges.value.toMark(C.Unstaged)
+        val untrackedMark   = untrackedFiles.value.nonEmpty.toMark(C.Untracked)
+        val uncommittedMark = uncommittedChanges.value.toMark(C.Uncommitted)
         s"$revision$unstagedMark$untrackedMark$uncommittedMark"
       }
     },
 
     decoratedShortBuildNumber := {
       shortBuildNumber.value map { revision =>
-        val unstagedMark    = (unstagedChanges.value).toMark(C.Unstaged)
-        val untrackedMark   = (untrackedFiles.value.nonEmpty).toMark(C.Untracked)
-        val uncommittedMark = (uncommittedChanges.value).toMark(C.Uncommitted)
+        val unstagedMark    = unstagedChanges.value.toMark(C.Unstaged)
+        val untrackedMark   = untrackedFiles.value.nonEmpty.toMark(C.Untracked)
+        val uncommittedMark = uncommittedChanges.value.toMark(C.Uncommitted)
         s"$revision$unstagedMark$untrackedMark$uncommittedMark"
       }
     }
