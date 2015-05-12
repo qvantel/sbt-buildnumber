@@ -35,6 +35,3 @@ repository in bintray := "sbt-plugins"
 bintrayOrganization in bintray := Some("onesto")
 
 licenses += ("MIT", url("https://github.com/onesto/sbt-buildnumber/blob/master/LICENSE"))
-
-
-net.virtualvoid.sbt.graph.Plugin.graphSettings
