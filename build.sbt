@@ -1,10 +1,18 @@
 sbtPlugin := true
 
-name := "buildnumber"
+scalaVersion := "2.10.5"
 
-version := "0.0.3"
+sbtVersion := "0.13.8"
+
+name := "sbt-buildnumber"
+
+version := "0.1.0"
 
 organization := "fi.onesto.sbt"
+
+organizationName := "Onesto Services Oy"
+
+organizationHomepage := Some(new java.net.URL("http://onesto.fi"))
 
 description := "VCS build number plugin for SBT"
 
@@ -12,17 +20,12 @@ startYear := Some(2013)
 
 homepage := Some(url("https://github.com/onesto/sbt-buildnumber"))
 
-
-publishTo := Some(Classpaths.sbtPluginReleases) 
+scmInfo := Some(ScmInfo(new java.net.URL("https://github.com/onesto/sbt-buildnumber"), "scm:git:github.com/onesto/sbt-buildnumber.git", Some("scm:git:git@github.com:onesto/sbt-buildnumber.git")))
 
 publishMavenStyle := false
 
 publishArtifact in Test := false
 
+bintrayOrganization := Option("onesto")
 
-scalaVersion := "2.10.4"
-
-sbtVersion := "0.13.5"
-
-
-net.virtualvoid.sbt.graph.Plugin.graphSettings
+licenses += ("MIT", url("https://github.com/onesto/sbt-buildnumber/blob/master/LICENSE"))
