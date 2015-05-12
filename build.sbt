@@ -1,5 +1,3 @@
-import bintray.Keys._
-
 sbtPlugin := true
 
 scalaVersion := "2.10.4"
@@ -24,14 +22,10 @@ homepage := Some(url("https://github.com/onesto/sbt-buildnumber"))
 
 scmInfo := Some(ScmInfo(new java.net.URL("https://github.com/onesto/sbt-buildnumber"), "scm:git:github.com/onesto/sbt-buildnumber.git", Some("scm:git:git@github.com:onesto/sbt-buildnumber.git")))
 
-bintrayPublishSettings
-
 publishMavenStyle := false
 
 publishArtifact in Test := false
 
-repository in bintray := "sbt-plugins"
-
-bintrayOrganization in bintray := Some("onesto")
+bintrayOrganization := Option("onesto")
 
 licenses += ("MIT", url("https://github.com/onesto/sbt-buildnumber/blob/master/LICENSE"))
