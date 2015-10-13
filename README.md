@@ -9,9 +9,9 @@ Currently only Git and Mercurial (via command-line commands) are supported
 Installation
 ------------
 
-Add to your project/plugins.sbt:
+Add to your `project/plugins.sbt`:
 
-addSbtPlugin("fi.onesto.sbt" % "sbt-buildnumber" % "0.1.0")
+    addSbtPlugin("fi.onesto.sbt" % "sbt-buildnumber" % "0.1.0")
 
 
 Usage
